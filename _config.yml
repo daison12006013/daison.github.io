@@ -9,11 +9,9 @@
 title: Daison Blog
 email: daison12006013@gmail.com
 description: > # this means to ignore newlines until "baseurl:"
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
+  You can follow me here and read my updates, let's rock the PHP world! This site is compiled and implemented using Jekyll.
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://yourdomain.com" # the base hostname & protocol for your site
+url: "http://daisoncarino.com" # the base hostname & protocol for your site
 #twitter_username: jekyllrb
 github_username: daison12006013
 
