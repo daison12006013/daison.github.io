@@ -12,11 +12,11 @@ author_gravatar:    ae435986219831b9f6d96b31e3455a12 # Gravatar md5 hash
 
 # Site Settings
 baseurl:            "" # Base URL must end WITHOUT a slash, default: ""
-permalink:          /notes/:title # Post permalink
+permalink:          /posts/:title # Post permalink
 timezone:           Asia/Manila # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
 
 # Site Build
-highlighter:        pygments
+highlighter:        rouge
 #markdown:           redcarpet
 #redcarpet:
 #    extensions:     ["no_intra_emphasis", "fenced_code_blocks", "autolink", "tables", "with_toc_data", "highlight", "footnotes"]
