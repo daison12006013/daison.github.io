@@ -1,0 +1,61 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1" /><title>Slayer Updates</title><meta name="twitter:card" content="summary" /><meta name="twitter:site" content="@" /><meta name="twitter:title" content="Slayer Updates" /><meta name="twitter:description" content="Here’s the current update in the development branch:"><meta name="description" content="Here’s the current update in the development branch:"><link rel="icon" href="/assets/favicon.png"><link rel="apple-touch-icon" href="/assets/touch-icon.png"><link rel="stylesheet" href="//code.cdn.mozilla.net/fonts/fira.css"><link rel="stylesheet" href="/assets/core.css"><link rel="canonical" href="/posts/slayer-updates"><link rel="alternate" type="application/atom+xml" title="Daison Cariño" href="/feed.xml" /></head><body><aside class="logo"> <a href="/"> <img src="http://www.gravatar.com/avatar/ae435986219831b9f6d96b31e3455a12.png?s=80" class="gravatar"> </a> <span class="logo-prompt">Back to Home</span></aside><main> <noscript><style> article .footnotes { display: block; }</style></noscript><article><div class="center"><h1>Slayer Updates</h1><time>March 23, 2016</time></div><div class="divider"></div><h2 id="heres-the-current-update-in-the-development-branch">Here’s the current update in the development branch:</h2><h4 id="the-di-function-handles-now-a-string-and-an-array-on-its-argument">The <code class="highlighter-rouge">di()</code> function handles now a <code class="highlighter-rouge">string</code> and an <code class="highlighter-rouge">array</code> on its argument</h4><div class="highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+<span class="c1">// it acts like di()-&gt;get('application')
+</span><span class="nx">di</span><span class="p">(</span><span class="s1">'application'</span><span class="p">);</span>
+</code></pre></div><p>and</p><div class="highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+<span class="c1">// it acts like di()-&gt;set(&lt;alias&gt;, &lt;callback&gt;, &lt;singleton = false&gt;)
+</span><span class="nx">di</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="s1">'myAlias'</span><span class="p">,</span>
+        <span class="k">function</span> <span class="p">()</span> <span class="p">{},</span>
+        <span class="nv">$shared</span> <span class="o">=</span> <span class="kc">true</span><span class="p">,</span>
+    <span class="p">]</span>
+<span class="p">);</span>
+</code></pre></div><h4 id="the-config-function-handles-now-an-array-too-on-its-argument">The <code class="highlighter-rouge">config()</code> function handles now an <code class="highlighter-rouge">array</code> too on its argument</h4><p>Let’s assume we have the default config extracted using <code class="highlighter-rouge">config()-&gt;toArray()</code></p><div class="highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+
+<span class="p">[</span>
+    <span class="s1">'env'</span> <span class="o">=&gt;</span> <span class="s1">'production'</span><span class="p">,</span>
+    <span class="s1">'app'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+        <span class="s1">'services'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+            <span class="mi">0</span> <span class="o">=&gt;</span> <span class="s1">'Namespace\Of\MyServiceProvider'</span><span class="p">,</span>
+        <span class="p">],</span>
+    <span class="p">]</span>
+    <span class="c1">//...
+</span><span class="p">];</span>
+</code></pre></div><p>the <code class="highlighter-rouge">config(&lt;array&gt;, &lt;merge = true&gt;)</code> shows the ability to update the current config structure, if we will will use the <strong>merge</strong> process</p><div class="highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+
+<span class="nx">config</span><span class="p">([</span>
+    <span class="s1">'app'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+        <span class="s1">'services'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+            <span class="s1">'New\Namespace\MyNewServiceProvider'</span><span class="p">,</span>
+        <span class="p">],</span>
+    <span class="p">],</span>
+<span class="p">]);</span>
+</code></pre></div><p>the code above will automatically <strong>merge</strong> your passed-in config, so when extracting using <code class="highlighter-rouge">config()-&gt;toArray()</code>, you should be able to have the same config below</p><div class="highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+
+<span class="p">[</span>
+    <span class="s1">'app'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+        <span class="s1">'services'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+            <span class="mi">0</span> <span class="o">=&gt;</span> <span class="s1">'Namespace\Of\MyServiceProvider'</span><span class="p">,</span>
+            <span class="mi">1</span> <span class="o">=&gt;</span> <span class="s1">'New\Namespace\MyNewServiceProvider'</span><span class="p">,</span>
+        <span class="p">],</span>
+    <span class="p">],</span>
+<span class="p">];</span>
+</code></pre></div><p>how about having the option to recursively change things to override a non-associative index in config. You have the <strong><em>second argument</em></strong> to pass-in <code class="highlighter-rouge">false</code> value to apply <code class="highlighter-rouge">array_replace_recursive()</code>`</p><div class="highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+
+<span class="nx">config</span><span class="p">([</span>
+    <span class="s1">'app'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+        <span class="s1">'services'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+            <span class="s1">'New\Namespace\MyNewServiceProvider'</span><span class="p">,</span>
+        <span class="p">],</span>
+    <span class="p">],</span>
+<span class="p">],</span> <span class="kc">false</span><span class="p">);</span>
+</code></pre></div><p>Now extracting the config:</p><div class="highlighter-rouge"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+
+<span class="p">[</span>
+    <span class="s1">'app'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+        <span class="s1">'services'</span> <span class="o">=&gt;</span> <span class="p">[</span>
+            <span class="mi">0</span> <span class="o">=&gt;</span> <span class="s1">'New\Namespace\MyNewServiceProvider'</span><span class="p">,</span>
+        <span class="p">],</span>
+    <span class="p">],</span>
+<span class="p">];</span>
+</code></pre></div><p>So the <code class="highlighter-rouge">Namespace\Of\MyServiceProvider:class</code> is already replaced.</p><h4 id="version">Version</h4><p>Right now it is currently under development in the <code class="highlighter-rouge">dev</code> branch which points to the <code class="highlighter-rouge">1.4.x</code> development along the <code class="highlighter-rouge">framework</code> repository.</p></article><div class="back"> <a href="/">Back</a></div></main></body></html>

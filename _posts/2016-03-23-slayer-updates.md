@@ -1,5 +1,5 @@
 ---
-title: Slayer Updates March 23
+title: Slayer Updates
 updated: 2016-03-23 10:20
 ---
 
